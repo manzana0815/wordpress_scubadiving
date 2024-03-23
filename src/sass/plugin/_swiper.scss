@@ -1,0 +1,53 @@
+@use "global" as *;
+
+
+.swiper {
+  width: 100%;
+  height: auto;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  display: inline-block;
+  height: rem(80);
+  margin-top: 0;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: rem(80);
+}
+
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  // SPでは非表示
+  display: none;
+
+  @include mq(md) {
+    // デフォルトのcontent:"prev", "next";を無効にする
+    content: "";
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    display: inline-block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.swiper-button-prev::after {
+
+  @include mq(md) {
+    background-image: url("../images/common/arrow-left.svg");
+  }
+}
+
+
+.swiper-button-next::after {
+
+  @include mq(md) {
+    background-image: url("../images/common/arrow-right.svg");
+  }
+}

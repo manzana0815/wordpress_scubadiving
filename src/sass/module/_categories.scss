@@ -1,0 +1,26 @@
+@use "global" as *;
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: rem(16) rem(20);
+  place-items: center;
+
+  @include mq(md){
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: rem(16) rem(32);
+  }
+}
+
+.categories__item.current {
+  background-color: $blue;
+  color: $white;
+}
+
+.categories__item:hover {
+  background-color: $blue;
+  color: $white;
+  transition: 0.3s ease;
+}

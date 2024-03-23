@@ -1,0 +1,54 @@
+@use "global" as *;
+
+.to-top {
+  display: none;
+  position: fixed;
+  bottom: rem(16);
+  right: rem(16);
+  transition: opacity 0.3s ease;
+  z-index: 100;
+
+  @include mq(md){
+    bottom: rem(20);
+    right: rem(20);
+  }
+}
+
+
+.to-top a {
+  background-color: $white;
+  border-radius: 50%;
+  display: block;
+  height: rem(48);
+  position: relative;
+  width: rem(48);
+
+  @include mq(md){
+    height: rem(80);
+    width: rem(80);
+  }
+}
+
+.to-top a:hover {
+  opacity: 0.7;
+  transition: 0.3s ease;
+}
+
+.to-top a::before {
+  content: "";
+  background-image: url("../images/common/arrow-right.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  display: inline-block;
+  height: rem(48);
+  position: absolute;
+  transform: rotate(-90deg);
+  width: rem(48);
+
+  @include mq(md){
+    height: rem(80);
+    width: rem(80);
+  }
+}

@@ -1,0 +1,189 @@
+@use "global" as *;
+
+.two-column {
+  position: relative;
+}
+
+.two-column::before {
+  content: "";
+  background-image: url("../images/common/fish-to-right_green.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: calc(55 / 375 * 100vw);
+  position: absolute;
+  top: rem(-25);
+  left: calc(50% - min(46vw, rem(619)));
+  max-width: rem(120);
+  width: 100%;
+  z-index: 1;
+
+  @include mq(md){
+    top: rem(-70);
+    height: calc(138 / 1440 * 100vw);
+    max-width: rem(301);
+    z-index: -1;
+  }
+}
+
+.two-column__inner.inner {
+  max-width: rem(600);
+
+  @include mq(md){
+    max-width: rem(1130);
+  }
+}
+
+.two-column__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: rem(80);
+
+  @include mq(md) {
+    flex-direction: row;
+  }
+}
+
+.two-column__main-content {
+  margin: 0 auto;
+  max-width: rem(706);
+  width: 96%;
+
+  @include mq(md){
+    width: 100%;
+  }
+}
+
+.two-column__pagenavi {
+  margin-top: rem(78);
+}
+
+.two-column__aside-content {
+  max-width: rem(600);
+  width: 85.217391%;
+
+  @include mq(md) {
+    max-width: rem(294);
+    width: 100%;
+  }
+}
+
+.two-column__sub-content {
+  margin: 0 auto;
+  max-width: rem(600);
+  width: 96%;
+
+  @include mq(md){
+    width: 100%;
+  }
+}
+
+.two-column__sub-content img {
+  aspect-ratio: 345 / 231;
+  margin-top: rem(24);
+  object-fit: cover;
+
+  @include mq(md) {
+    aspect-ratio: 700 / 468;
+    margin-top: rem(40);
+  }
+}
+
+.two-column__sub-content p {
+  margin-top: rem(24);
+  line-height: calc(24 / 16);
+
+  @include mq(md) {
+    margin-top: rem(40);
+  }
+}
+
+
+.two-column__sub-content ul {
+  list-style: none;
+  list-style-position: outside;
+  margin-top: rem(24);
+
+  @include mq(md){
+    margin-top: rem(40);
+  }
+}
+
+.two-column__sub-content li {
+  display: flex;
+  max-width: 90%; /* リストアイテムの幅を制限 */
+  margin-top: rem(4);
+  word-break: break-word; /* 長いテキストがはみ出す場合に改行する */
+}
+
+.two-column__sub-content li::before {
+  content: "";
+  background-image: url("../images/common/seastar_green.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
+  height: rem(16);
+  margin-right: rem(9);
+  width: rem(16);
+}
+
+.two-column__sub-content li {
+  list-style: none;
+  display: flex; /* 行頭を揃えるためにflexを使用 */
+  align-items: flex-start;
+  margin-top: rem(4);
+  max-width: 90%; /* リストアイテムの幅を制限 */
+  word-break: break-word; /* 長いテキストがはみ出す場合に改行する */
+  padding-left: rem(25); /* マーカーの幅分だけ左側に余白を追加 */
+  position: relative; /* マーカーの位置を相対位置に設定 */
+}
+
+.two-column__sub-content li::before {
+  content: "";
+  background-image: url("../images/common/seastar_green.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block; /* マーカーをブロック要素に変更 */
+  height: rem(16);
+  margin-right: rem(9);
+  width: rem(16);
+  position: absolute; /* マーカーを絶対位置に設定 */
+  top: rem(5);
+  left: 0; /* マーカーをリストアイテムの左端に配置 */
+}
+
+.two-column__sub-content .wp-pagenavi {
+  gap: rem(25);
+  margin-top: rem(40);
+
+  @include mq(md){
+    margin-top: rem(80);
+  }
+}
+
+.two-column__mv img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.two-column__date {
+  font-family: $english-font;
+  font-weight: $regular;
+  font-size: rem(14);
+  line-height: calc(18 / 14);
+}
+
+.two-column__blog-title {
+  border-bottom: 1px solid $blue;
+  font-weight: $medium;
+  font-size: rem(24);
+  padding-bottom: rem(4);
+
+  @include mq(md) {
+    font-size: rem(32);
+    padding-bottom: 0;
+  }
+}

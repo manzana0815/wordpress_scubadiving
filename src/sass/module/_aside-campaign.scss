@@ -1,0 +1,47 @@
+@use "global" as *;
+
+.aside-campaign__cards {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: rem(23);
+  gap: rem(38);
+
+}
+
+.aside-campaign__card .campaign-card__img {
+  aspect-ratio: 294 / 188;
+}
+
+.aside-campaign__card .campaign-card__body {
+  padding: rem(16) rem(23) 0;
+  text-align: center;
+
+  @include mq(md){
+    padding: rem(14) rem(23) 0;
+  }
+}
+
+.aside-campaign__card .campaign-card__text {
+  @include mq(md){
+    font-size: rem(14);
+    margin-top: 0;
+  }
+}
+
+.aside-campaign__card .campaign-card__price-regular {
+  @include mq(md){
+    font-size: rem(20);
+  }
+}
+
+.aside-campaign__card .campaign-card__price-discounted {
+  @include mq(md){
+    font-size: rem(32);
+  }
+}
+
+.aside-campaign__btn {
+  margin-top: rem(42);
+  text-align: center;
+}

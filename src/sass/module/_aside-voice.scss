@@ -1,0 +1,37 @@
+@use "global" as *;
+
+
+.aside-voice__img {
+  aspect-ratio: 294 / 218;
+  overflow: hidden;
+  width: 100%;
+
+  @include mq(md) {
+    max-width: rem(294);
+  }
+}
+
+.aside-voice__img img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.aside-voice__body {
+  padding-top: rem(16);
+}
+
+.aside-voice__meta {
+  font-size: rem(12);
+  line-height: calc(18 / 12);
+}
+
+.aside-voice__title {
+  font-size: rem(24);
+  font-weight: $medium;
+}
+
+.aside-voice__btn {
+  margin-top: rem(44);
+  text-align: center;
+}

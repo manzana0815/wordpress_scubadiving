@@ -1,14 +1,14 @@
 @use "global" as *;
 
+.aside-voice__card.voice-card {
+  padding: 0;
+}
 
 .aside-voice__img {
   aspect-ratio: 294 / 218;
+  height: 100%;
   overflow: hidden;
   width: 100%;
-
-  @include mq(md) {
-    max-width: rem(294);
-  }
 }
 
 .aside-voice__img img {

@@ -247,46 +247,37 @@ textarea {
   flex-direction: column;
   gap: rem(16);
   text-align: left;
+
 }
 
 .form__privacy {
+  font-size: rem(14);
   margin: auto;
-  text-align: center;
+  text-align: left;
   width: 82%;
-}
 
-.form__privacy label {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: rem(8);
-
-  @include mq(md) {
-    align-items: center;
-    gap: rem(16);
+  @include mq(md){
+    text-align: center;
   }
 }
 
 .form__privacy [type="checkbox"]+span {
+  padding-left: rem(30);
+
+  @include mq(md){
+    padding-left: rem(38);
+  }
+}
+.form__privacy [type="checkbox"]+span::before {
   height: rem(22);
   width: rem(22);
-}
 
-.form__privacy [type="checkbox"]+span::before {
-  height: 100%;
-  width: 100%;
 }
 
 .form__privacy [type="checkbox"]:checked+span::after {
   height: rem(11);
   width: rem(20);
 }
-
-.form__text {
-  font-size: rem(14);
-  text-align: left;
-}
-
 .form__btn {
   background-color: $blue;
   border: 1px solid $blue;
@@ -367,18 +358,18 @@ textarea {
   color: $blue;
 }
 
-.form__item input.is-error,
-.form__item textarea.is-error {
+.form__item.is-error input,
+.form__item.is-error textarea {
   border: 1px solid #C94800;
   background: rgba(201, 72, 0, 0.2);
 }
 
-.form__item input.is-error:hover,
-.form__item textarea.is-error:hover {
+.form__item.is-error:hover input,
+.form__item.is-error:hover textarea {
   outline: 2px solid #C94800;
 }
 
-.form__item input.is-error::placeholder {
+.form__item.is-error input::placeholder {
   color: $white;
 }
 

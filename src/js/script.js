@@ -273,17 +273,6 @@ jQuery(function ($) { // この中であればWordpressでも「$」が使用可
     });
   });
 
-
-  // ------------------
-  // ADDRESS BAR
-  // ------------------
-  $(window).on("load resize", function () {
-    let window_height = window.innerHeight
-      ? window.innerHeight
-      : $(window).innerHeight();
-    $(".wrap").css("min-height", window_height + "px");
-  });
-
   // ------------------
   // CONTACT FORM
   // ------------------

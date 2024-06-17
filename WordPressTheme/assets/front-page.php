@@ -1,37 +1,46 @@
 <?php get_header(); ?>
 <main>
   <!-- TOP-MV -->
+
+  <!-- TOP-MV -->
   <div class="top-mv">
     <div class="top-mv__swiper swiper js-top-mv-swiper">
       <div class="top-mv__items swiper-wrapper">
-        <?php $mv_slider = SCF::get("mv_slider_images");
-        foreach ($mv_slider as $fields) {
-          $image_pc_url = wp_get_attachment_url($fields["slider_pc"]);
-          $image_sp_url = wp_get_attachment_url($fields["slider_sp"]);
-          $image_alt = get_post_meta(get_the_ID(), 'slide_alt', true);
+        <?php
+        // 'mv_slider' フィールドからスライダーデータを取得
+        $mv_slider = get_field('mv_slider');
 
-          if (!empty($image_sp_url && $image_pc_url)) { ?>
-            <div class="top-mv__item swiper-slide">
-              <div class="top-mv__img">
-                <picture>
-                  <source srcset="<?php echo esc_url($image_pc_url); ?>" media="(min-width :767px)" type="image/webp">
-                  <img src="<?php echo esc_url($image_sp_url); ?>" alt="<?php echo esc_attr($image_alt); ?>">
-                </picture>
+        // スライダーが存在する場合、データをループして表示
+        if ($mv_slider) {
+          // スライダーの各項目に対してループ
+          for ($i = 1; $i <= count($mv_slider); $i++) {
+            $pc_image = $mv_slider["pc_image_{$i}"] ?? null;
+            $sp_image = $mv_slider["sp_image_{$i}"] ?? null;
+            $alt_text = $mv_slider["alt_text_{$i}"] ?? 'スライダー画像';
+
+            // 画像URLが存在し、両方とも非空の文字列である場合のみ表示
+            if ($pc_image && $sp_image) {
+        ?>
+              <div class="top-mv__item swiper-slide">
+                <div class="top-mv__img">
+                  <picture>
+                    <source srcset="<?php echo esc_url($pc_image); ?>" media="(min-width: 767px)">
+                    <img src="<?php echo esc_url($sp_image); ?>" alt="<?php echo esc_attr($alt_text); ?>">
+                  </picture>
+                </div>
               </div>
-            </div>
-        <?php }
-        } ?>
-
-
+        <?php
+            }
+          }
+        }
+        ?>
       </div>
-
       <div class="top-mv__title-block">
         <h2 class="top-mv__title">diving</h2>
         <span class="top-mv__sub-title">into the ocean</span>
       </div>
     </div>
   </div>
-
 
   <!-- //TOP-CAMPAIGN -->
   <section class="top-campaign top-campaign-layout">
@@ -47,53 +56,63 @@
           <!-- Additional required wrapper -->
           <div class="top-campaign__cards swiper-wrapper">
             <?php
-            $wp_query = new WP_Query();
-            $my_posts = array(
+            $campaign_query = new WP_Query(array(
               'post_type' => 'campaign',
               'posts_per_page' => '-1',
-            );
-            $wp_query->query($my_posts);
-            if ($wp_query->have_posts()) : while ($wp_query->have_posts()) : $wp_query->the_post();
+            ));
+
+            if ($campaign_query->have_posts()) :
+              while ($campaign_query->have_posts()) : $campaign_query->the_post();
+                $campaign_card = get_field('campaign_card');
+
+                if ($campaign_card) :
+                  $campaign_image = $campaign_card['campaign_image'];
+                  $campaign_title = $campaign_card['campaign_title'];
+                  $campaign_detail = $campaign_card['campaign_detail'];
+                  $regular_price = $campaign_card['campaign_price']['regular_price'];
+                  $discounted_price = $campaign_card['campaign_price']['discounted_price'];
             ?>
-                <!-- Slides -->
-                <div class="top-campaign__card campaign-card swiper-slide">
-                  <div class="campaign-card__img">
-                    <picture>
-                      <source srcset="<?php the_post_thumbnail_url("full"); ?>" />
-                      <img src="<?php the_post_thumbnail_url("full"); ?>" alt="<?php the_title(); ?>の画像">
-                    </picture>
+
+                  <!-- Slides -->
+                  <div class="top-campaign__card campaign-card swiper-slide">
+                    <div class="campaign-card__img">
+                      <picture>
+                        <img src="<?php echo esc_url($campaign_image); ?>" alt="<?php echo esc_attr($campaign_title); ?>の画像">
+                      </picture>
+                    </div>
+
+                    <div class="campaign-card__body">
+                      <div class="campaign-card__header">
+                        <span class="campaign-card__category category">
+                          <?php
+                          $categories = get_the_category();
+                          if (!empty($categories)) {
+                            echo esc_html($categories[0]->name);
+                          } else {
+                            echo 'カテゴリーなし';
+                          }
+                          ?>
+                        </span>
+                        <h3 class="campaign-card__title"><?php echo esc_html($campaign_title); ?></h3>
+                      </div>
+                      <div class="campaign-card__content">
+                        <p class="campaign-card__text">全部コミコミ(お一人様)</p>
+                        <div class="campaign-card__price">
+                          <?php if (isset($regular_price) && isset($discounted_price)) : ?>
+                            <span class="campaign-card__price-regular">&yen;<?php echo number_format($regular_price); ?></span>
+                            <span class="campaign-card__price-discounted">&yen;<?php echo number_format($discounted_price); ?></span>
+                          <?php endif; ?>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div class="campaign-card__body">
-                    <div class="campaign-card__category category">
-                      <?php
-                      $categories = get_the_category();
-                      if (!empty($categories)) {
-                        echo esc_html($categories[0]->name);
-                      } else {
-                        echo 'カテゴリーなし';
-                      }
-                      ?>
-                    </div>
-                    <h3 class="campaign-card__title"><?php the_title(); ?></h3>
-                  </div>
-                  <div class="campaign-card__content">
-                    <p class="campaign-card__text">全部コミコミ(お一人様)</p>
-                    <div class="campaign-card__price">
-                      <?php
-                      // スマートカスタムフィールドから値を取得し、float型にキャスト
-                      $regular_price = floatval(SCF::get('regular_price'));
-                      $discounted_price = floatval(SCF::get('discounted_price'));
-                      ?>
-                      <span class="campaign-card__price-regular">&yen;<?php echo number_format($regular_price); ?></span>
-                      <span class="campaign-card__price-discounted">&yen;<?php echo number_format($discounted_price); ?></span>
-                    </div>
-                  </div>
-                </div>
-
-            <?php endwhile;
+            <?php
+                endif;
+              endwhile;
+              wp_reset_postdata();
             endif;
-            wp_reset_postdata(); ?>
+            ?>
 
           </div>
         </div>
@@ -143,10 +162,12 @@
         <h3 class="top-about__contents-title">Dive into<br>the Ocean</h3>
         <div class="top-about__content">
           <div class="top-about__text">
-            <p class="text">
-              ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。<br>
-              ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。ここにテキストが入ります。
-            </p>
+            <?php
+            // スラッグから固定ページを取得
+            $page = get_page_by_path('about');
+            if ($page) {
+              echo apply_filters('the_content', $page->post_content);
+            } ?>
           </div>
 
           <div class="top-about__btn">
@@ -208,7 +229,7 @@
         );
         $wp_query->query($my_posts);
         if ($wp_query->have_posts()) : while ($wp_query->have_posts()) : $wp_query->the_post();
-    ?>
+        ?>
             <li class="blog-cards__item blog-card js-hover-scale">
               <a href="#">
                 <div class="blog-card__body">
@@ -251,63 +272,61 @@
         <span class="section-title__en">voice</span>
         <h2 class="section-title__jp">お客様の声</h2>
       </div>
-
       <ul class="top-voice__cards voice-cards">
         <?php
-        $wp_query = new WP_Query();
-        $my_posts = array(
+        $voice_query = new WP_Query(array(
           'post_type' => 'voice',
           'posts_per_page' => '2',
-        );
-        $wp_query->query($my_posts);
-        if ($wp_query->have_posts()) : while ($wp_query->have_posts()) : $wp_query->the_post();
+        ));
+        if ($voice_query->have_posts()) : while ($voice_query->have_posts()) : $voice_query->the_post();
+            $customer_voice = get_field('customer_voice');
+            if ($customer_voice) :
+              $customer_info = $customer_voice['customer_info'];
+              $customer_image = $customer_voice['customer_image'];
+              $voice_title = $customer_voice['voice_title'];
+              $voice_text = $customer_voice['voice_text'];
         ?>
-            <li class="voice-cards__item voice-card">
-              <div class="voice-card__body">
-                <div class="voice-card__header">
-                  <div class="voice-card__meta">
-                    <span class="voice-card__gender">
-                      <?php
-                      the_field("age");
-                      ?>
-                      (
-                      <?php
-                      the_field("gender")0118;
-                      ?>
-                      )
-                    </span>
-                    <span class="voice-card__category category">
-                      <?php
-                      $categories = get_the_category();
-                      if (!empty($categories)) {
-                        echo esc_html($categories[0]->name);
-                      } else {
-                        echo 'カテゴリーなし';
-                      }
-                      ?>
-                    </span>
+              <li class="top-voice__card voice-card">
+                <div class="voice-card__body">
+                  <div class="voice-card__header">
+                    <div class="voice-card__meta">
+                      <span class="voice-card__gender">
+                        <?php echo esc_html($customer_info["age"]); ?> (<?php echo esc_html($customer_info["group"]); ?>)
+                      </span>
+                      <span class="voice-card__category category">
+                        <?php
+                        // カテゴリーの取得と出力
+                        $categories = get_the_category();
+                        if (!empty($categories)) {
+                          echo esc_html($categories[0]->name);
+                        } else {
+                          echo 'カテゴリーなし';
+                        }
+                        ?>
+                      </span>
+                    </div>
+                    <h3 class="voice-card__title"><?php echo esc_html($voice_title); ?></h3>
                   </div>
-                  <h3 class=" voice-card__title"><?php the_title(); ?></h3>
+                  <div class="voice-card__img color-box js-color-box">
+                    <picture>
+                      <img src="<?php echo esc_url($customer_image); ?>" alt="<?php echo esc_attr($voice_title); ?>のアイキャッチ画像">
+                    </picture>
+                  </div>
                 </div>
-                <div class="voice-card__img color-box js-color-box">
-                  <picture>
-                    <!-- ブラウザがwebpに対応している場合 -->
-                    <source srcset="<?php the_post_thumbnail_url("full"); ?>" type="image/webp">
-                    <img src="<?php the_post_thumbnail_url("full"); ?>" alt="<?php the_title(); ?>のアイキャッチ画像">
-                  </picture>
+                <div class="voice-card__content">
+                  <p class="voice-card__text text">
+                    <?php echo esc_html($voice_text); ?>
+                  </p>
                 </div>
-              </div>
-              <div class="voice-card__content">
-                <p class="voice-card__text text">
-                  <?php the_excerpt(); ?>
-                </p>
-              </div>
-            </li>
-
-        <?php endwhile;
-        endif;
-        wp_reset_postdata(); ?>
+              </li>
+        <?php
+            endif; // End if $customer_voice
+          endwhile;
+        endif; // End while and if have_posts()
+        wp_reset_postdata();
+        ?>
       </ul>
+
 
       <div class="top-voice__btn">
         <a href="<?php echo esc_url(home_url('/')); ?>voice" class="btn">view more<span></span></a>
@@ -345,7 +364,7 @@
               <?php $course_01 = SCF::get("course_01", 22);
               foreach ($course_01 as $fields) { ?>
                 <div class="top-price__list-item">
-                  <dt><?php echo $fields["course_01_menu"]; ?></dt>
+                  <dt><?php echo do_shortcode($fields["course_01_title"]); ?></dt>
                   <dd>
                     &yen;
                     <?php $price = floatval($fields["course_01_price"]);
@@ -363,7 +382,7 @@
               <?php $course_02 = SCF::get("course_02", 22);
               foreach ($course_02 as $fields) { ?>
                 <div class="top-price__list-item">
-                  <dt><?php echo $fields["course_02_menu"]; ?></dt>
+                  <dt><?php echo do_shortcode($fields["course_02_title"]); ?></dt>
                   <dd>
                     &yen;
                     <?php $price = floatval($fields["course_02_price"]);
@@ -381,7 +400,7 @@
               <?php $course_03 = SCF::get("course_03", 22);
               foreach ($course_03 as $fields) { ?>
                 <div class="top-price__list-item">
-                  <dt><?php echo $fields["course_03_menu"]; ?></dt>
+                  <dt><?php echo do_shortcode($fields["course_03_title"]); ?></dt>
                   <dd>
                     &yen;
                     <?php $price = floatval($fields["course_03_price"]);
@@ -400,11 +419,7 @@
               <?php $course_04 = SCF::get("course_04", 22);
               foreach ($course_04 as $fields) { ?>
                 <div class="top-price__list-item">
-                  <dt><?php echo $fields["course_04_price"]; ?></dt>
-                  <dd>&yen;24,000</dd>
-                </div>
-                <div class="top-price__list-item">
-                  <dt>1日ダイビング(3ダイブ)</dt>
+                  <dt><?php echo do_shortcode($fields["course_04_title"]); ?></dt>
                   <dd>&yen;
                     <?php $price = floatval($fields["course_04_price"]);
                     echo number_format($price);

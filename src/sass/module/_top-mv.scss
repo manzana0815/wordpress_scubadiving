@@ -10,12 +10,13 @@
 .top-mv__img {
   height: 100vh;
   min-height: rem(260);
+  object-fit: cover;
+  width: 100%;
 }
 
 .top-mv__img img {
   height: 100%;
   min-height: rem(260);
-  object-fit: cover;
   width: 100%;
 }
 

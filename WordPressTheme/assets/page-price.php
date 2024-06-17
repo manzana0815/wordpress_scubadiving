@@ -24,21 +24,18 @@
   <section class="price section-layout">
     <div class="price__inner inner">
       <div class="price__items table">
-        <!-- ループ -->
         <div class="table__item" id="price01">
           <h3 class="table__title"><span>ライセンス講習</span></h3>
           <dl class="table__cells">
             <?php $course_01 = SCF::get("course_01");
             foreach ($course_01 as $fields) { ?>
               <div class="table__row">
-                <dt><?php echo $fields["course_01_menu"]; ?></dt>
+                <dt><?php echo do_shortcode($fields["course_01_title"]); ?></dt>
+                <!-- 管理画面で入力された数字を￥マークとカンマ付きで出力 -->
                 <dd>&yen;<?php
-                    // $fields["course_02_price"] の値を浮動小数点数に変換
-                    $price = floatval($fields["course_01_price"]);
-
-                    // 変換した数値を number_format() でフォーマット
-                    echo number_format($price);
-                    ?></dd>
+                          $price = floatval($fields["course_01_price"]);
+                          echo number_format($price);
+                          ?></dd>
               </div>
             <?php } ?>
           </dl>
@@ -49,14 +46,12 @@
             <?php $course_02 = SCF::get("course_02");
             foreach ($course_02 as $fields) { ?>
               <div class="table__row">
-                <dt><?php echo esc_html($fields["course_02_menu"]); ?></dt>
+                <dt><?php echo do_shortcode($fields["course_02_title"]); ?></dt>
+                <!-- 管理画面で入力された数字を￥マークとカンマ付きで出力 -->
                 <dd>&yen;<?php
-                    // $fields["course_02_price"] の値を浮動小数点数に変換
-                    $price = floatval($fields["course_02_price"]);
-
-                    // 変換した数値を number_format() でフォーマット
-                    echo number_format($price);
-                    ?>
+                          $price = floatval($fields["course_02_price"]);
+                          echo number_format($price);
+                          ?>
                 </dd>
               </div>
             <?php } ?>
@@ -69,14 +64,12 @@
             <?php $course_03 = SCF::get("course_03");
             foreach ($course_03 as $fields) { ?>
               <div class="table__row">
-                <dt><?php echo $fields["course_03_menu"]; ?></dt>
+                <dt><?php echo do_shortcode($fields["course_03_title"]); ?></dt>
+                <!-- 管理画面で入力された数字を￥マークとカンマ付きで出力 -->
                 <dd>&yen;<?php
-                    // $fields["course_02_price"] の値を浮動小数点数に変換
-                    $price = floatval($fields["course_03_price"]);
-
-                    // 変換した数値を number_format() でフォーマット
-                    echo number_format($price);
-                    ?></dd>
+                          $price = floatval($fields["course_03_price"]);
+                          echo number_format($price);
+                          ?></dd>
               </div>
             <?php } ?>
           </dl>
@@ -88,14 +81,12 @@
             <?php $course_04 = SCF::get("course_04");
             foreach ($course_04 as $fields) { ?>
               <div class="table__row">
-                <dt><?php echo $fields["course_04_menu"]; ?></dt>
+                <dt><?php echo do_shortcode($fields["course_04_title"]); ?></dt>
+                <!-- 管理画面で入力された数字を￥マークとカンマ付きで出力 -->
                 <dd>&yen;<?php
-                    // $fields["course_02_price"] の値を浮動小数点数に変換
-                    $price = floatval($fields["course_04_price"]);
-
-                    // 変換した数値を number_format() でフォーマット
-                    echo number_format($price);
-                    ?></dd>
+                          $price = floatval($fields["course_04_price"]);
+                          echo number_format($price);
+                          ?></dd>
               </div>
             <?php } ?>
           </dl>

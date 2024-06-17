@@ -14,19 +14,8 @@
 }
 
 .aside-campaign__card .campaign-card__body {
-  padding: rem(16) rem(23) 0;
+  padding: rem(24) rem(16);
   text-align: center;
-
-  @include mq(md){
-    padding: rem(14) rem(23) 0;
-  }
-}
-
-.aside-campaign__card .campaign-card__text {
-  @include mq(md){
-    font-size: rem(14);
-    margin-top: 0;
-  }
 }
 
 .aside-campaign__card .campaign-card__price-regular {

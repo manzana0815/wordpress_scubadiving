@@ -23,6 +23,7 @@
 }
 
 .voice-card__header {
+  border-bottom: 1px solid $blue;
   width: 100%;
 }
 
@@ -40,7 +41,6 @@
 }
 
 .voice-card__title {
-  border-bottom: 1px solid $blue;
   font-size: rem(16);
   font-weight: $medium;
   padding-bottom: rem(3);

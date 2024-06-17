@@ -261,17 +261,9 @@ jQuery(function ($) {
     $(".js-accordion-title").on("click", function () {
       // クリックした次の要素を開閉
       $(this).next().slideToggle(300);
-      // タイトルにactiveクラスを付け外しして矢印の向きを変更
-      $(this).toggleClass("is-active", 300);
+      // タイトルにopenクラスを付け外しして矢印の向きを変更
+      $(this).toggleClass("active", 300);
     });
-  });
-
-  // ------------------
-  // ADDRESS BAR
-  // ------------------
-  $(window).on("load resize", function () {
-    var window_height = window.innerHeight ? window.innerHeight : $(window).innerHeight();
-    $(".wrap").css("min-height", window_height + "px");
   });
 
   // ------------------

@@ -24,56 +24,69 @@
     <div class="voice__inner inner">
       <ul class="voice__categories categories">
         <li class="categories__item category category--lg current"><a href="#">all</a></li>
-        <li class="categories__item category category--lg"><a href="#">ライセンス講習</a></li>
-        <li class="categories__item category category--lg"><a href="#">ファンダイビング</a></li>
-        <li class="categories__item category category--lg"><a href="#">体験ダイビング</a></li>
+        <?php
+        // カテゴリー情報を取得
+        $categories = get_categories(array(
+          'orderby' => 'name',
+          'order'   => 'ASC'
+        ));
+
+        // 各カテゴリーに対してループ
+        foreach ($categories as $category) {
+          // カテゴリーへのリンクを取得
+          $category_link = get_category_link($category->term_id);
+
+          // リストアイテムとしてカテゴリーを出力
+          echo '<li class="categories__item category category--lg"><a href="' . esc_url($category_link) . '">' . esc_html($category->name) . '</a></li>';
+        }
+        ?>
       </ul>
 
-      <ul class="voice__cards voice-cards">
-        <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-            <li class="voice-cards__item voice-card">
-              <div class="voice-card__body">
-                <div class="voice-card__header">
-                  <div class="voice-card__meta">
-                    <span class="voice-card__gender">
-                      <?php
-                      the_field("age");
-                      ?>
-                      (
-                      <?php
-                      the_field("gender");
-                      ?>
-                      )
-                    </span>
-                    <span class="voice-card__category category">
-                      <?php
-                      $categories = get_the_category();
-                      if (!empty($categories)) {
-                        echo esc_html($categories[0]->name);
-                      } else {
-                        echo 'カテゴリーなし';
-                      }
-                      ?>
-                    </span>
+      <ul class="voice__cards">
+        <?php if (have_posts()) : while (have_posts()) : the_post();
+            $customer_voice = get_field('customer_voice');
+            if ($customer_voice) :
+              $customer_info = $customer_voice['customer_info'];
+              $customer_image = $customer_voice['customer_image'];
+              $voice_title = $customer_voice['voice_title'];
+              $voice_text = $customer_voice['voice_text'];
+        ?>
+              <li class="voice-cards__item voice-card">
+                <div class="voice-card__body">
+                  <div class="voice-card__header">
+                    <div class="voice-card__meta">
+                      <span class="voice-card__gender">
+                        <?php echo esc_html($customer_info["age"]); ?> (<?php echo esc_html($customer_info["group"]); ?>)
+                      </span>
+                      <span class="voice-card__category category">
+                        <?php
+                        $categories = get_the_category();
+                        if (!empty($categories)) {
+                          echo esc_html($categories[0]->name);
+                        } else {
+                          echo 'カテゴリーなし';
+                        }
+                        ?>
+                      </span>
+                    </div>
+                    <h3 class=" voice-card__title"><?php echo esc_html($voice_title); ?></h3>
                   </div>
-                  <h3 class=" voice-card__title"><?php the_title(); ?></h3>
+                  <div class="voice-card__img">
+                    <picture>
+                      <img src="<?php echo esc_url($customer_image); ?>" alt="<?php echo esc_attr($voice_title); ?>のアイキャッチ画像">
+                    </picture>
+                  </div>
                 </div>
-                <div class="voice-card__img">
-                  <picture>
-                    <!-- ブラウザがwebpに対応している場合 -->
-                    <source srcset="<?php the_post_thumbnail_url("full"); ?>" type="image/webp">
-                    <img src="<?php the_post_thumbnail_url("full"); ?>" alt="<?php the_title(); ?>のアイキャッチ画像">
-                  </picture>
+                <div class="voice-card__content">
+                  <p class="voice-card__text text">
+                    <?php echo esc_html($voice_text); ?>
+                  </p>
                 </div>
-              </div>
-              <div class="voice-card__content">
-                <p class="voice-card__text text">
-                  <?php the_content(); ?>
-                </p>
-              </div>
-            </li>
+              </li>
 
-        <?php endwhile;
+        <?php
+            endif;
+          endwhile;
         endif; ?>
       </ul>
 

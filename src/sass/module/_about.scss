@@ -84,7 +84,6 @@
 
 .about__contents {
   margin-top: rem(40);
-  text-shadow: 0 4px 4px rgba($color: #000, $alpha: 0.25);
 
   @include mq(md) {
     display: flex;

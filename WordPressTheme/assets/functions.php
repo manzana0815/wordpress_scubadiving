@@ -54,7 +54,7 @@ function change_posts_per_page($query)
 
   if ($query->is_post_type_archive('campaign')) { // 'campaign' カスタム投稿タイプのアーカイブを指定
     $query->set('posts_per_page', '4'); // 表示件数を4件に指定
-  }
+  }https://discord.com/channels/906834869584289792/1095933250024775680
 
   if ($query->is_post_type_archive('voice')) { // 'voice' カスタム投稿タイプのアーカイブを指定
     $query->set('posts_per_page', '6'); // 表示件数を6件に指定
@@ -62,10 +62,10 @@ function change_posts_per_page($query)
 }
 add_action('pre_get_posts', 'change_posts_per_page');
 
-//投稿記事で自動挿入されるpタグ、brタグを削除 
+//投稿記事で自動挿入されるpタグ、brタグを削除
 remove_filter('the_content', 'wpautop');
 remove_filter('the_excerpt', 'wpautop');
-remove_filter('the_title', 'wpautop');  
+remove_filter('the_title', 'wpautop');
 remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
 
 // 管理画面のカスタム投稿一覧にカテゴリー(ターム)を表示
@@ -100,16 +100,46 @@ add_filter('jpeg_quality', function ($arg) {
 });
 
 
-function my_custom_widget_area()
-{
+add_action('widgets_init', function () {
   register_sidebar(array(
-    'name'          => esc_html__('カスタムウィジェットエリア', 'text_domain'),
-    'id'            => 'custom-widget-area',
-    'description'   => esc_html__('ここにウィジェットを追加します。', 'text_domain'),
-    'before_widget' => '<section id="%1$s" class="widget %2$s">',
-    'after_widget'  => '</section>',
-    'before_title'  => '<h2 class="widget-title">',
-    'after_title'   => '</h2>',
+    'name' => 'サイドバー', // 管理画面のウィジェットエリアの名称
+    'id' => 'sidebar', // ウィジェットエリアの識別名称（出力時にも使用）
+    'description' => 'サイドバーのテンプレートパーツ', // 管理画面のウィジェットエリアの説明文
+    'before_widget' => '<section id="%1$s" class="aside__ %2$s">', // ウィジェットを囲むdivの開始タグ
+    'after_widget' => '</section>', // ウィジェットを囲むdivの終了タグ
+    'before_title' => '<h3 class="aside__title">', // ウィジェットタイトルを囲むh3の開始タグ
+    'after_title' => '</h3>', // ウィジェットタイトルを囲むh3の終了タグ
   ));
+});
+
+function mobile_break_shortcode() {
+  // front-page.phpでの表示時は改行ショートコードを無効にする
+  if (is_front_page()) {
+      return '';
+  } else {
+      return '<br class="u-mobile">';
+  }
 }
-add_action('widgets_init', 'my_custom_widget_area');
+add_shortcode('sp_br', 'mobile_break_shortcode');
+
+
+function generate_information_tabs_menu() {
+  $page_id = get_page_by_path('information')->ID;
+  $diving_info = get_field('diving_info', $page_id);
+
+  $menu = '<ul class="nav__sub-items">';
+  if ($diving_info) {
+      // タイトルが設定されている要素のみをカウント
+      for ($i = 1; $i <= count($diving_info) / 3; $i++) {
+          if (!empty($diving_info["info_title_{$i}"])) { // タイトルが存在するかチェック
+              $tabId = 'tab' . sprintf('%02d', $i);
+              $info_title = $diving_info["info_title_{$i}"];
+              $menu .= '<li class="nav__sub-item"><a href="' . esc_url(get_permalink($page_id) . '#' . $tabId) . '">' . esc_html($info_title) . '</a></li>';
+          }
+      }
+  }
+  $menu .= '</ul>';
+
+  return $menu;
+}
+add_shortcode('information_tabs_menu', 'generate_information_tabs_menu');

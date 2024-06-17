@@ -71,6 +71,7 @@
   justify-content: center;
   min-height: rem(59.5);
   text-align: center;
+  word-break: break-all;
   width: 69%;
 
   @include mq(md){
@@ -98,4 +99,3 @@
     width: 33%;
   }
 }
-

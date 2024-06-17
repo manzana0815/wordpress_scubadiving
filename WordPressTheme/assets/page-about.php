@@ -49,9 +49,7 @@
         <h3 class="about__contents-title">Dive into<br />the Ocean</h3>
         <div class="about__content">
           <div class="about__text">
-            <p class="text">
              <?php the_content(); ?>
-            </p>
           </div>
         </div>
       </div>
@@ -82,9 +80,6 @@
             </div>
         <?php }
         } ?>
-
-
-
       </div>
     </div>
 
